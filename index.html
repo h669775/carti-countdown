@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I AM MUSIC Countdown</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        #countdown { font-size: 3em; margin: 20px; }
+        #users-online { font-size: 1.5em; color: red; }
+    </style>
+</head>
+<body>
+    <h1>I AM MUSIC Drops In:</h1>
+    <div id="countdown"></div>
+    <p>Active Users: <span id="users-online">0</span></p>
+    
+    <script>
+        // Countdown Logic
+        function updateCountdown() {
+            const releaseTime = new Date("March 15, 2025 00:00:00 EST").getTime();
+            const now = new Date().getTime();
+            const timeLeft = releaseTime - now;
+            if (timeLeft <= 0) {
+                document.getElementById("countdown").innerHTML = "IT'S OUT NOW!";
+                return;
+            }
+            const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+            const seconds = Math.floor((timeLeft / 1000) % 60);
+            document.getElementById("countdown").innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+        }
+        setInterval(updateCountdown, 1000);
+
+        // Firebase Config (Replace with your actual Firebase config)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Track Active Users
+        const userRef = db.ref("activeUsers");
+        const userKey = userRef.push().key;
+        userRef.child(userKey).set(true);
+        userRef.child(userKey).onDisconnect().remove();
+
+        userRef.on("value", snapshot => {
+            document.getElementById("users-online").innerText = snapshot.numChildren();
+        });
+    </script>
+</body>
+</html>
