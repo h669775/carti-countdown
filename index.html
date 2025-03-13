@@ -34,15 +34,15 @@
         }
         setInterval(updateCountdown, 1000);
 
-        // Firebase Config (Replace with your actual Firebase config)
+        // Firebase Config
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            databaseURL: "YOUR_DATABASE_URL",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyBRWmQj2zuAUZUrpLzQHt5VHK6E6TOfTag",
+            authDomain: "carticountdown.firebaseapp.com",
+            databaseURL: "https://carticountdown-default-rtdb.firebaseio.com",
+            projectId: "carticountdown",
+            storageBucket: "carticountdown.appspot.com",  // ✅ FIXED
+            messagingSenderId: "670404889312",
+            appId: "1:670404889312:web:09eae8fabc6be2611ade85"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
