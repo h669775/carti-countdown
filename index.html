@@ -6,6 +6,7 @@
     <title>I AM MUSIC Countdown</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js"></script> <!-- Add this line -->
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
         #countdown { font-size: 3em; margin: 20px; }
@@ -20,7 +21,8 @@
     <script>
         // Countdown Logic
         function updateCountdown() {
-            const releaseTime = new Date("March 15, 2025 00:00:00 EST").getTime();
+            // Update the target time to 5 AM EST on March 15, 2025
+            const releaseTime = new Date("March 15, 2025 05:00:00 EST").getTime();  // Fixed to 5 AM
             const now = new Date().getTime();
             const timeLeft = releaseTime - now;
             if (timeLeft <= 0) {
@@ -40,21 +42,37 @@
             authDomain: "carticountdown.firebaseapp.com",
             databaseURL: "https://carticountdown-default-rtdb.firebaseio.com",
             projectId: "carticountdown",
-            storageBucket: "carticountdown.appspot.com",  // ✅ FIXED
+            storageBucket: "carticountdown.appspot.com",
             messagingSenderId: "670404889312",
             appId: "1:670404889312:web:09eae8fabc6be2611ade85"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const analytics = firebase.analytics(); // Initialize Analytics
 
         // Track Active Users
         const userRef = db.ref("activeUsers");
         const userKey = userRef.push().key;
-        userRef.child(userKey).set(true);
-        userRef.child(userKey).onDisconnect().remove();
 
+        // Add a user to the active users list
+        userRef.child(userKey).set(true).then(() => {
+            console.log("User added to active users list!");
+        }).catch(error => {
+            console.error("Error adding user:", error);
+        });
+
+        // Remove the user when they disconnect
+        userRef.child(userKey).onDisconnect().remove().then(() => {
+            console.log("User will be removed on disconnect.");
+        }).catch(error => {
+            console.error("Error on disconnect:", error);
+        });
+
+        // Listen for active users changes
         userRef.on("value", snapshot => {
-            document.getElementById("users-online").innerText = snapshot.numChildren();
+            const activeUsers = snapshot.numChildren();
+            console.log(`Active Users: ${activeUsers}`);  // Log to the console
+            document.getElementById("users-online").innerText = activeUsers;
         });
     </script>
 </body>
