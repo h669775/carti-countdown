@@ -16,14 +16,25 @@
             background-size: cover; /* Make sure the image covers the entire screen */
             background-position: center; /* Center the image */
             background-attachment: fixed; /* Keep the image in place while scrolling */
+            color: white; /* Make the text white */
+            position: relative; /* Allow positioning of text over image */
+            height: 100vh; /* Full viewport height */
+        }
+        #content {
+            position: absolute;
+            top: 20%; /* Position the content towards the top */
+            width: 100%;
         }
         #countdown { font-size: 3em; margin: 20px; }
         #users-online { font-size: 1.5em; color: red; }
     </style>
 </head>
 <body>
-    <h1>I AM MUSIC Drops In:</h1>
-    <div id="countdown"></div>
+    <div id="content">
+        <h1>I AM MUSIC Drops In:</h1>
+        <div id="countdown"></div>
+        <p>Active Users: <span id="users-online">0</span></p>
+    </div>
     
     <script>
         // Countdown Logic
@@ -61,4 +72,26 @@
         const userRef = db.ref("activeUsers");
         const userKey = userRef.push().key;
 
-        // Add a user to the active users li
+        // Add a user to the active users list
+        userRef.child(userKey).set(true).then(() => {
+            console.log("User added to active users list!");
+        }).catch(error => {
+            console.error("Error adding user:", error);
+        });
+
+        // Remove the user when they disconnect
+        userRef.child(userKey).onDisconnect().remove().then(() => {
+            console.log("User will be removed on disconnect.");
+        }).catch(error => {
+            console.error("Error on disconnect:", error);
+        });
+
+        // Listen for active users changes
+        userRef.on("value", snapshot => {
+            const activeUsers = snapshot.numChildren();
+            console.log(`Active Users: ${activeUsers}`);  // Log to the console
+            document.getElementById("users-online").innerText = activeUsers;
+        });
+    </script>
+</body>
+</html>
