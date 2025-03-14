@@ -20,19 +20,26 @@
             position: relative; /* Allow positioning of text over image */
             height: 100vh; /* Full viewport height */
         }
-        #content {
+        #header {
             position: absolute;
-            top: 20%; /* Position the content towards the top */
+            top: 0; /* Position the header at the top */
             width: 100%;
+            padding: 20px 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark background for readability */
+            color: #1DB954; /* Spotify Green */
+            font-size: 2em;
         }
         #countdown { font-size: 3em; margin: 20px; }
         #users-online { font-size: 1.5em; color: red; }
     </style>
 </head>
 <body>
-    <div id="content">
+    <div id="header">
         <h1>I AM MUSIC Drops In:</h1>
         <div id="countdown"></div>
+    </div>
+    
+    <div id="content">
         <p>Active Users: <span id="users-online">0</span></p>
     </div>
     
