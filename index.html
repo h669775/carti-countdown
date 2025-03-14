@@ -20,8 +20,8 @@
     <script>
         // Countdown Logic
         function updateCountdown() {
-            // Update the target time to 5 AM EST on March 15, 2025
-            const releaseTime = new Date("March 14, 2025 12:00:00 EST").getTime();  // Fixed to 5 AM
+            // Update the target time to 5 AM CEST on March 15, 2025
+            const releaseTime = new Date("March 15, 2025 05:00:00 GMT+0100").getTime();  // 5 AM CEST in Norway
             const now = new Date().getTime();
             const timeLeft = releaseTime - now;
             if (timeLeft <= 0) {
