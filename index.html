@@ -16,13 +16,12 @@
 <body>
     <h1>I AM MUSIC Drops In:</h1>
     <div id="countdown"></div>
-    <p>Active Users: <span id="users-online">0</span></p>
     
     <script>
         // Countdown Logic
         function updateCountdown() {
             // Update the target time to 5 AM EST on March 15, 2025
-            const releaseTime = new Date("March 15, 2025 05:00:00 EST").getTime();  // Fixed to 5 AM
+            const releaseTime = new Date("March 14, 2025 12:00:00 EST").getTime();  // Fixed to 5 AM
             const now = new Date().getTime();
             const timeLeft = releaseTime - now;
             if (timeLeft <= 0) {
